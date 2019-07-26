@@ -9,7 +9,7 @@ git clone https://github.com/sourcegraph/sourcegraph.git code
 ```
 export REDIS_ENDPOINT=redis:6379
 ```
-4.Remove the following lines in code/dev/launch.sh
+4.Remove the following lines in `code/dev/launch.sh`
 ```
 # Verify postgresql config.
 hash psql 2>/dev/null || {
@@ -27,8 +27,8 @@ if ! psql -wc '\x' >/dev/null; then
     exit 1
 fi
 ```
-5. Create a copy of /code/dev/launch.sh as install.sh
-6. Remove the following lines in install.sh
+5. Create a copy of `/code/dev/launch.sh` as `install.sh`
+6. Remove the following lines in `install.sh`
 ```
 printf >&2 "\nStarting all binaries...\n\n"
 export GOREMAN="goreman --set-ports=false --exit-on-error -f ${PROCFILE:-dev/Procfile}"
@@ -38,8 +38,8 @@ exec $GOREMAN start
 ```
 docker-compose up
 ```
-8. Let's wait until Sourcegraph ends to initialize.
-9. Open http://localhost:3080 or if your are using docker machine would http://<docker-machine ip>:3080
+8. Let's wait until Sourcegraph initializes.
+9. Open `http://localhost:3080` or if your are using docker machine would be `http://<docker-machine ip>:3080`
 
 
 Any contribution will be appreciated.
