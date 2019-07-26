@@ -41,5 +41,7 @@ docker-compose up
 8. Let's wait until Sourcegraph initializes.
 9. Open `http://localhost:3080` or if your are using docker machine would be `http://<docker-machine ip>:3080`
 
+Note:
+If you are running docker using docker-machine you should replace `localhost` with the docker machine IP in the Sourcegraph project.
 
 Any contribution will be appreciated.
