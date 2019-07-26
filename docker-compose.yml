@@ -1,0 +1,57 @@
+version: '3.7'
+services:
+  sourcegraph:
+    restart: 'always'
+    container_name: sourcegraph
+    build: .
+    ports:
+      - "3080:3080"
+      - "5080:5080"
+    environment:
+      - PGPORT=5432
+      - PGHOST=postgres
+      - PGUSER=sourcegraph
+      - PGPASSWORD=sourcegraph
+      - PGDATABASE=sourcegraph
+      - PGSSLMODE=disable
+      - SHELL=/bin/bash
+      - DOCKER_HOST=tcp://docker:2376
+      - DOCKER_TLS_VERIFY=1
+      - DOCKER_CERT_PATH=/certs
+    volumes:
+      - /root/sourcegraph//node_modules
+      - /root/sourcegraph/cmd/management-console/web/node_modules
+      - ./code:/root/sourcegraph
+      - /docker-dind/certs/client:/certs
+    depends_on:
+      - "docker"
+      - "postgres"
+      - "redis"
+  docker:
+    container_name: docker
+    image: 'docker:dind'
+    privileged: true
+    environment: 
+      - DOCKER_TLS_CERTDIR=/certs
+    volumes:
+      - /docker-dind/certs:/certs
+  postgres:
+    container_name: postgres
+    image: 'postgres:9.6'
+    expose:
+      - "5432"
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_PASSWORD=sourcegraph
+      - POSTGRES_USER=sourcegraph
+      - POSTGRES_DB=sourcegraph
+    volumes:
+      - /home/docker/postgresql-data:/var/lib/postgresql/data
+  redis:
+    container_name: redis
+    image: 'redis'
+    volumes:
+      - /home/docker/redis-data:/data
+    expose:
+      - "6379"
